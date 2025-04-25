@@ -14,17 +14,14 @@ type ViewEventsDrawerProps = {
 
 const ViewEventsDrawer: React.FC<ViewEventsDrawerProps> = ({ open, date, onClose }) => {
   const dispatch = useAppDispatch()
-
   const handleClose = () => {
     dispatch(closeViewDrawer())
     onClose()
   }
-
   const handleAdd = (d?: Date) => {
-    dispatch(openAddDrawer(d ? d.toISOString() : null))
+    dispatch(openAddDrawer(d?.toISOString() ?? null))
     handleClose()
   }
-
   const handleEdit = (ev: EventType) => {
     dispatch(openEditDrawer(ev))
     handleClose()
@@ -33,18 +30,28 @@ const ViewEventsDrawer: React.FC<ViewEventsDrawerProps> = ({ open, date, onClose
   return (
     <NoSsr defer>
       <Drawer anchor="right" open={open} onClose={handleClose}>
-        <Stack spacing={2} sx={{ width: 320, p: 3 }}>
-          {date && (
-            <>
-              <EventList date={date} onEdit={handleEdit} />
+        <Stack
+          sx={{
+            width: 320,
+            height: '100%',
+            p: 3,
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <Stack spacing={2} sx={{ flexGrow: 1 }}>
+            {date && <EventList date={date} onEdit={handleEdit} />}
+          </Stack>
+          <Stack direction="row" spacing={2}>
+            {date && (
               <Button fullWidth variant="contained" onClick={() => handleAdd(date)}>
                 Add
               </Button>
-            </>
-          )}
-          <Button fullWidth variant="outlined" onClick={handleClose}>
-            Cancel
-          </Button>
+            )}
+            <Button fullWidth variant="outlined" onClick={handleClose}>
+              Cancel
+            </Button>
+          </Stack>
         </Stack>
       </Drawer>
     </NoSsr>
