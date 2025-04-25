@@ -241,6 +241,7 @@ export const EventDrawer: React.FC<Props> = ({
                               position: 'absolute',
                               top: 0,
                               right: 5,
+                              p: 0
                             },
                            },
                         },

@@ -1,15 +1,16 @@
+// components/DayCell.tsx
 'use client'
 import React from 'react'
 import { useAppDispatch } from '@/store/hooks'
 import {
+  openViewDrawer,
   openAddDrawer,
   openEditDrawer,
-  openViewDrawer,
 } from '@/store/slices/modalSlice'
 import EventList, { EventType } from './EventList'
 import styles from './CalendarGrid.module.css'
 
-type DayCellProps = {
+interface DayCellProps {
   date: Date
   onAdd?: (date: Date) => void
 }
@@ -18,29 +19,33 @@ export default function DayCell({ date, onAdd }: DayCellProps) {
   const dispatch = useAppDispatch()
   const isFirstDay = date.getDate() === 1
   const isToday = date.toDateString() === new Date().toDateString()
-  const containerClass = `${styles.cell}${
-    isFirstDay ? ` ${styles.firstDay}` : ''
-  }`
-  const dateClass = `${styles.date}${isToday ? ` ${styles.today}` : ''}`
+  const cellClass = [
+    styles.cell,
+    isFirstDay && styles.firstDay,
+  ].filter(Boolean).join(' ')
+  const dateClass = [
+    styles.date,
+    isToday && styles.today,
+  ].filter(Boolean).join(' ')
 
-  function handleView() {
+  const handleClick = () => {
     dispatch(openViewDrawer(date.toISOString()))
   }
 
-  function handleContext(e: React.MouseEvent) {
+  const handleContext = (e: React.MouseEvent) => {
     e.preventDefault()
     dispatch(openAddDrawer(date.toISOString()))
     onAdd?.(date)
   }
 
-  function handleEdit(event: EventType) {
-    dispatch(openEditDrawer(event))
+  const handleEdit = (item: EventType) => {
+    dispatch(openEditDrawer(item))
   }
 
   return (
     <div
-      className={containerClass}
-      onClick={handleView}
+      className={cellClass}
+      onClick={handleClick}
       onContextMenu={handleContext}
     >
       <span className={dateClass}>{date.getDate()}</span>
