@@ -1,6 +1,6 @@
 'use client'
 import React, { useRef, useState } from 'react'
-import { Drawer, Stack, Box, TextField, Button } from '@mui/material'
+import { Drawer, Stack, Box, TextField, Button, Typography } from '@mui/material'
 import {
   DatePicker,
   LocalizationProvider,
@@ -135,7 +135,10 @@ export const EventDrawer: React.FC<Props> = ({
                 }}
               >
                 <Stack spacing={2} sx={{ flexGrow: 1 }}>
-                  <Box sx={{ minHeight: 80 }}>
+                <Typography variant="h6">
+                 Add event
+                </Typography>
+                  <Box sx={{ minHeight: 75 }}>
                     <TextField
                       name="title"
                       label="Title"
@@ -147,7 +150,7 @@ export const EventDrawer: React.FC<Props> = ({
                     />
                   </Box>
 
-                  <Box sx={{ minHeight: 80 }}>
+                  <Box sx={{ minHeight: 75 }}>
                     <DatePicker
                       label="Start date"
                       value={new Date(values.start)}
@@ -171,7 +174,7 @@ export const EventDrawer: React.FC<Props> = ({
                     />
                   </Box>
 
-                  <Box sx={{ minHeight: 80 }}>
+                  <Box sx={{ minHeight: 75 }}>
                     <DatePicker
                       label="End date"
                       value={new Date(values.end)}
@@ -195,7 +198,7 @@ export const EventDrawer: React.FC<Props> = ({
                     />
                   </Box>
 
-                  <Box sx={{ minHeight: 80 }}>
+                  <Box sx={{ minHeight: 75 }}>
                     <MobileTimePicker
                       label="Start time"
                       value={
@@ -220,6 +223,9 @@ export const EventDrawer: React.FC<Props> = ({
                         dialog: {
                           disablePortal: true,
                           hideBackdrop: true,
+                          PaperProps: {
+                                 sx: { minWidth: 300 },
+                             },
                           sx: {
                              ...dialogSx(startPos.top, startPos.left),
                              '& .MuiClock-root': { m: 0 },
@@ -242,7 +248,7 @@ export const EventDrawer: React.FC<Props> = ({
                     />
                   </Box>
 
-                  <Box sx={{ minHeight: 80 }}>
+                  <Box sx={{ minHeight: 75 }}>
                     <MobileTimePicker
                       label="End time"
                       value={values.endTime ? new Date(values.endTime) : null}

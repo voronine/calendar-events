@@ -1,43 +1,50 @@
-// components/DayCell.tsx
 'use client'
 import React from 'react'
 import { useAppDispatch } from '@/store/hooks'
-import { openEditDrawer, openAddDrawer, openViewDrawer } from '@/store/slices/modalSlice'
+import {
+  openAddDrawer,
+  openEditDrawer,
+  openViewDrawer,
+} from '@/store/slices/modalSlice'
 import EventList, { EventType } from './EventList'
 import styles from './CalendarGrid.module.css'
 
-type Props = {
+type DayCellProps = {
   date: Date
-  onAdd: (d?: Date) => void
+  onAdd?: (date: Date) => void
 }
 
-export default function DayCell({ date, onAdd }: Props) {
+export default function DayCell({ date, onAdd }: DayCellProps) {
   const dispatch = useAppDispatch()
-  const isFirst = date.getDate() === 1
+  const isFirstDay = date.getDate() === 1
   const isToday = date.toDateString() === new Date().toDateString()
-  const cellClass = `${styles.cell}${isFirst ? ` ${styles.firstDay}` : ''}`
+  const containerClass = `${styles.cell}${
+    isFirstDay ? ` ${styles.firstDay}` : ''
+  }`
   const dateClass = `${styles.date}${isToday ? ` ${styles.today}` : ''}`
 
-  const handleCellClick = () =>
+  function handleView() {
     dispatch(openViewDrawer(date.toISOString()))
+  }
 
-  const handleEdit = (ev: EventType) =>
-    dispatch(openEditDrawer(ev))
+  function handleContext(e: React.MouseEvent) {
+    e.preventDefault()
+    dispatch(openAddDrawer(date.toISOString()))
+    onAdd?.(date)
+  }
+
+  function handleEdit(event: EventType) {
+    dispatch(openEditDrawer(event))
+  }
 
   return (
     <div
-      className={cellClass}
-      onClick={handleCellClick}
-      onContextMenu={e => {
-        e.preventDefault()
-        dispatch(openAddDrawer(date.toISOString()))
-        onAdd(date)
-      }}
+      className={containerClass}
+      onClick={handleView}
+      onContextMenu={handleContext}
     >
       <span className={dateClass}>{date.getDate()}</span>
-      <div onClick={e => e.stopPropagation()}>
-        <EventList date={date} onEdit={handleEdit} />
-      </div>
+      <EventList date={date} onEdit={handleEdit} />
     </div>
   )
 }
