@@ -1,0 +1,17 @@
+.item {
+    color: #fff;
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-size: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    cursor: pointer;
+    background: #77bbf3;
+    overflow: hidden;
+  }
+  
+  .item:hover { background: #4fa5eb; }
+
+  

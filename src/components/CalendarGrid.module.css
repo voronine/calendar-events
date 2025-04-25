@@ -1,0 +1,129 @@
+.grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e9ebee 100%);
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  }
+  
+  .cell {
+    height: 120px;
+    padding: 8px 6px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    cursor: pointer;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .cell:hover {
+    background: #f3f6ff;
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.15);
+  }
+  
+  .firstDay {
+    background: #f9f9f9;
+  }
+  
+  .date {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #1976d2;
+  }
+  
+  .today {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #1976d2;
+    border-radius: 50%;
+  }
+  
+  .events {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  
+  .events::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .events::-webkit-scrollbar-thumb {
+    background: rgba(25, 118, 210, 0.3);
+    border-radius: 4px;
+  }
+  
+  .item {
+    width: 100%;
+    color: #fff;
+    border-radius: 6px;
+    padding: 4px 6px;
+    margin-bottom: 4px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    cursor: pointer;
+    background: linear-gradient(135deg, #0f4fb3 0%, #173e8b 100%);
+    transition: box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  
+  .item:nth-child(odd) {
+    background: linear-gradient(135deg, #135ac6 0%, #0d47a1 100%);
+  }
+  
+  .item:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    background-color: #0d47a1;
+  }
+  
+  .item::after {
+    content: attr(data-title);
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 220px;
+    padding: 6px 8px;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    background: rgba(51, 51, 51, 0.95);
+    color: #fff;
+    border-radius: 4px;
+    white-space: normal;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+    z-index: 20;
+  }
+  
+  .item::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: rgba(51, 51, 51, 0.95);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    z-index: 20;
+  }
+  
+  .item:hover::after,
+  .item:hover::before {
+    opacity: 1;
+  }
+  
