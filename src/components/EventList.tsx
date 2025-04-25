@@ -1,13 +1,26 @@
+// components/EventList.tsx
 'use client'
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { useAppSelector } from '@/store/hooks'
 import { iso } from '@/lib/date'
-import styles from './CalendarGrid.module.css'
 import EventItem from './EventItem'
+import styles from './CalendarGrid.module.css'
 
-type Props = { date: Date }
+export type EventType = {
+  id: string
+  title: string
+  start: string
+  end: string
+  startTime?: string
+  endTime?: string
+}
 
-export default function EventList({ date }: Props) {
+type Props = {
+  date: Date
+  onEdit: (ev: EventType) => void
+}
+
+export default function EventList({ date, onEdit }: Props) {
   const items = useAppSelector(s => s.events.items)
   const events = useMemo(
     () => items.filter(e => iso(new Date(e.start)) === iso(date)),
@@ -17,7 +30,12 @@ export default function EventList({ date }: Props) {
   return (
     <div className={styles.events}>
       {events.map(ev => (
-        <EventItem key={ev.id} {...ev} />
+        <EventItem
+          key={ev.id}
+          title={ev.title}
+          start={ev.start}
+          onClick={() => onEdit(ev)}
+        />
       ))}
     </div>
   )

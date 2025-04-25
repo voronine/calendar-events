@@ -1,19 +1,21 @@
 'use client'
-import { useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Drawer, Stack, TextField, Button } from '@mui/material'
-import {
-  DatePicker,
-  LocalizationProvider,
-  MobileTimePicker,
-} from '@mui/x-date-pickers'
+import { DatePicker, LocalizationProvider, MobileTimePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { Formik } from 'formik'
 import * as yup from 'yup'
+import NoSsr from '@mui/material/NoSsr'
 import { useAppDispatch } from '@/store/hooks'
 import { addEvent } from '@/store/slices/eventsSlice'
-import NoSsr from '@mui/material/NoSsr'
+import { closeAddDrawer } from '@/store/slices/modalSlice'
+import { EventItem } from '@/store/slices/eventsSlice'
 
-type Props = { open: boolean; onClose: () => void; initialDate?: Date }
+type Props = {
+  open: boolean
+  onClose: () => void
+  initialEvent: EventItem | null
+}
 
 const schema = yup.object({
   title: yup.string().min(3).max(100).required(),
@@ -38,7 +40,7 @@ const dialogSx = (t: number, l: number) => ({
   '& .MuiPickersToolbarText-root': { fontSize: 20 },
 })
 
-const EventDrawer: React.FC<Props> = ({ open, onClose, initialDate }) => {
+export const EventDrawer: React.FC<Props> = ({ open, onClose, initialEvent }) => {
   const dispatch = useAppDispatch()
   const startRef = useRef<HTMLInputElement | null>(null)
   const endRef = useRef<HTMLInputElement | null>(null)
@@ -54,40 +56,42 @@ const EventDrawer: React.FC<Props> = ({ open, onClose, initialDate }) => {
     setter({ top: r.bottom + 42, left: r.left })
   }
 
+  const initialValues: EventItem =
+    initialEvent ?? {
+      id: '',
+      title: '',
+      start: new Date().toISOString(),
+      end: new Date().toISOString(),
+      startTime: undefined,
+      endTime: undefined,
+    }
+
+  const handleClose = () => {
+    dispatch(closeAddDrawer())
+    onClose()
+  }
+
   return (
     <NoSsr defer>
-      <Drawer anchor="right" open={open} onClose={onClose}>
+      <Drawer anchor="right" open={open} onClose={handleClose}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <Formik
-            initialValues={{
-              title: '',
-              start: initialDate ?? new Date(),
-              end: initialDate ?? new Date(),
-              startTime: null as Date | null,
-              endTime: null as Date | null,
-            }}
+          <Formik<EventItem>
+            initialValues={initialValues}
             validationSchema={schema}
             onSubmit={v => {
               dispatch(
                 addEvent({
                   title: v.title,
-                  start: v.start.toISOString(),
-                  end: v.end.toISOString(),
-                  startTime: v.startTime?.toISOString(),
-                  endTime: v.endTime?.toISOString(),
+                  start: v.start,
+                  end: v.end,
+                  startTime: v.startTime,
+                  endTime: v.endTime,
                 })
               )
-              onClose()
+              handleClose()
             }}
           >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              setFieldValue,
-              handleSubmit,
-            }) => (
+            {({ values, errors, touched, handleChange, setFieldValue, handleSubmit }) => (
               <Stack spacing={2} sx={{ width: 320, p: 3 }}>
                 <TextField
                   name="title"
@@ -99,22 +103,22 @@ const EventDrawer: React.FC<Props> = ({ open, onClose, initialDate }) => {
                 />
                 <DatePicker
                   label="Start date"
-                  value={values.start}
-                  onChange={d => setFieldValue('start', d)}
+                  value={new Date(values.start)}
+                  onChange={d => setFieldValue('start', d?.toISOString())}
                 />
                 <DatePicker
                   label="End date"
-                  value={values.end}
-                  onChange={d => setFieldValue('end', d)}
+                  value={new Date(values.end)}
+                  onChange={d => setFieldValue('end', d?.toISOString())}
                 />
                 <MobileTimePicker
                   label="Start time"
-                  value={values.startTime}
+                  value={values.startTime ? new Date(values.startTime) : null}
                   ampm={false}
                   format="HH:mm"
                   inputRef={startRef}
                   onOpen={() => setPos(startRef, setStartPos)}
-                  onChange={d => setFieldValue('startTime', d)}
+                  onChange={d => setFieldValue('startTime', d?.toISOString())}
                   slotProps={{
                     dialog: {
                       disablePortal: true,
@@ -125,12 +129,12 @@ const EventDrawer: React.FC<Props> = ({ open, onClose, initialDate }) => {
                 />
                 <MobileTimePicker
                   label="End time"
-                  value={values.endTime}
+                  value={values.endTime ? new Date(values.endTime) : null}
                   ampm={false}
                   format="HH:mm"
                   inputRef={endRef}
                   onOpen={() => setPos(endRef, setEndPos)}
-                  onChange={d => setFieldValue('endTime', d)}
+                  onChange={d => setFieldValue('endTime', d?.toISOString())}
                   slotProps={{
                     dialog: {
                       disablePortal: true,
@@ -143,7 +147,7 @@ const EventDrawer: React.FC<Props> = ({ open, onClose, initialDate }) => {
                   <Button fullWidth variant="contained" onClick={() => handleSubmit()}>
                     Save
                   </Button>
-                  <Button fullWidth variant="outlined" onClick={onClose}>
+                  <Button fullWidth variant="outlined" onClick={handleClose}>
                     Cancel
                   </Button>
                 </Stack>
@@ -155,5 +159,3 @@ const EventDrawer: React.FC<Props> = ({ open, onClose, initialDate }) => {
     </NoSsr>
   )
 }
-
-export default EventDrawer

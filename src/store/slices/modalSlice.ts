@@ -1,15 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { EventItem } from './eventsSlice'
 
 type ModalState = {
   addOpen: boolean
-  addDate: string | null
+  addEvent: EventItem | null
   viewOpen: boolean
   viewDate: string | null
 }
 
 const initialState: ModalState = {
   addOpen: false,
-  addDate: null,
+  addEvent: null,
   viewOpen: false,
   viewDate: null,
 }
@@ -20,17 +21,31 @@ const modalSlice = createSlice({
   reducers: {
     openAddDrawer: (state, action: PayloadAction<string | null>) => {
       state.addOpen = true
-      state.addDate = action.payload
+      const dateStr = action.payload
+      state.addEvent = dateStr
+        ? {
+            id: '',
+            title: '',
+            start: dateStr,
+            end: dateStr,
+            startTime: undefined,
+            endTime: undefined,
+          }
+        : null
     },
-    closeAddDrawer: state => {
+    openEditDrawer: (state, action: PayloadAction<EventItem>) => {
+      state.addOpen = true
+      state.addEvent = action.payload
+    },
+    closeAddDrawer: (state) => {
       state.addOpen = false
-      state.addDate = null
+      state.addEvent = null
     },
     openViewDrawer: (state, action: PayloadAction<string>) => {
       state.viewOpen = true
       state.viewDate = action.payload
     },
-    closeViewDrawer: state => {
+    closeViewDrawer: (state) => {
       state.viewOpen = false
       state.viewDate = null
     },
@@ -39,6 +54,7 @@ const modalSlice = createSlice({
 
 export const {
   openAddDrawer,
+  openEditDrawer,
   closeAddDrawer,
   openViewDrawer,
   closeViewDrawer,
