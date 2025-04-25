@@ -8,6 +8,7 @@ import {
 } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { Formik } from 'formik'
+import * as yup from 'yup'
 import NoSsr from '@mui/material/NoSsr'
 import { useAppDispatch } from '@/store/hooks'
 import { addEvent } from '@/store/slices/eventsSlice'
@@ -44,7 +45,6 @@ export const EventDrawer: React.FC<Props> = ({
   initialEvent,
 }) => {
   const dispatch = useAppDispatch()
-  const isEdit = Boolean(initialEvent)
   const startRef = useRef<HTMLInputElement | null>(null)
   const endRef = useRef<HTMLInputElement | null>(null)
   const [startPos, setStartPos] = useState({ top: 0, left: 0 })
@@ -110,10 +110,9 @@ export const EventDrawer: React.FC<Props> = ({
                 }}
               >
                 <Stack spacing={2} sx={{ flexGrow: 1 }}>
-                  <Typography variant="h6">
-                    {isEdit ? 'Edit event' : 'Add event'}
-                  </Typography>
-
+                <Typography variant="h6">
+                 Add event
+                </Typography>
                   <Box sx={{ minHeight: 75 }}>
                     <TextField
                       name="title"
@@ -147,8 +146,6 @@ export const EventDrawer: React.FC<Props> = ({
                           sx: dialogSx(startPos.top, startPos.left),
                         },
                       }}
-                      inputRef={startRef}
-                      onOpen={() => updatePosition(startRef, setStartPos)}
                     />
                   </Box>
 
@@ -173,8 +170,6 @@ export const EventDrawer: React.FC<Props> = ({
                           sx: dialogSx(endPos.top, endPos.left),
                         },
                       }}
-                      inputRef={endRef}
-                      onOpen={() => updatePosition(endRef, setEndPos)}
                     />
                   </Box>
 
@@ -186,6 +181,8 @@ export const EventDrawer: React.FC<Props> = ({
                       }
                       ampm={false}
                       format="HH:mm"
+                      inputRef={startRef}
+                      onOpen={() => updatePosition(startRef, setStartPos)}
                       onChange={(date) =>
                         setFieldValue('startTime', date?.toISOString())
                       }
@@ -202,15 +199,15 @@ export const EventDrawer: React.FC<Props> = ({
                           disablePortal: true,
                           hideBackdrop: true,
                           PaperProps: {
-                            sx: { minWidth: 300 },
-                          },
+                                 sx: { minWidth: 300 },
+                             },
                           sx: {
-                            ...dialogSx(startPos.top, startPos.left),
-                            '& .MuiClock-root': { m: 0 },
-                            '& .MuiDialogActions-root.MuiDialogActions-spacing.MuiPickersLayout-actionBar': {
-                              p: 0,
-                            },
-                            '& .MuiPickersToolbar-title': {
+                             ...dialogSx(startPos.top, startPos.left),
+                             '& .MuiClock-root': { m: 0 },
+                             '& .MuiDialogActions-root.MuiDialogActions-spacing.MuiPickersLayout-actionBar': {
+                                p: 0,
+                             },
+                             '& .MuiPickersToolbar-title': {
                               position: 'absolute',
                               top: 8,
                               right: 16,
@@ -219,9 +216,9 @@ export const EventDrawer: React.FC<Props> = ({
                               position: 'absolute',
                               top: 0,
                               right: 5,
-                              p: 0,
+                              p: 0
                             },
-                          },
+                           },
                         },
                       }}
                     />
@@ -230,11 +227,11 @@ export const EventDrawer: React.FC<Props> = ({
                   <Box sx={{ minHeight: 75 }}>
                     <MobileTimePicker
                       label="End time"
-                      value={
-                        values.endTime ? new Date(values.endTime) : null
-                      }
+                      value={values.endTime ? new Date(values.endTime) : null}
                       ampm={false}
                       format="HH:mm"
+                      inputRef={endRef}
+                      onOpen={() => updatePosition(endRef, setEndPos)}
                       onChange={(date) =>
                         setFieldValue('endTime', date?.toISOString())
                       }
@@ -250,15 +247,12 @@ export const EventDrawer: React.FC<Props> = ({
                         dialog: {
                           disablePortal: true,
                           hideBackdrop: true,
-                          PaperProps: {
-                            sx: { minWidth: 300 },
-                          },
                           sx: {
                             ...dialogSx(endPos.top, endPos.left),
-                            '& .MuiClock-root': { m: 0 },
+                             '& .MuiClock-root': { m: 0 },
                             '& .MuiDialogActions-root.MuiDialogActions-spacing.MuiPickersLayout-actionBar': {
-                              p: 0,
-                            },
+                                p: 0,
+                             },
                             '& .MuiPickersToolbar-title': {
                               position: 'absolute',
                               top: 8,
@@ -269,7 +263,7 @@ export const EventDrawer: React.FC<Props> = ({
                               top: 0,
                               right: 5,
                             },
-                          },
+                            }
                         },
                       }}
                     />
