@@ -9,25 +9,27 @@ export type Props = {
   title: string
   start: string
   onClick: () => void
+  large?: boolean
 }
 
-const StyledButton = styled(Button, {
-  shouldForwardProp: prop => prop !== 'past',
-})<ButtonProps & { past: boolean }>(({ theme, past }) => ({
+const StyledButton = styled(
+  Button,
+  { shouldForwardProp: prop => prop !== 'past' && prop !== 'large' }
+)<ButtonProps & { past: boolean; large?: boolean }>(({ theme, past, large }) => ({
   justifyContent: 'flex-start',
   flexDirection: 'column',
   alignItems: 'flex-start',
   textTransform: 'none',
-  marginBottom: theme.spacing(0.3),
-  paddingTop: theme.spacing(0.25),
-  paddingBottom: theme.spacing(0.25),
-  paddingLeft: theme.spacing(0.5),
-  paddingRight: theme.spacing(0.5),
-  lineHeight: 1,
-  fontSize: '0.6rem',
-  borderLeft: '3px solid rgba(59, 175, 214, 0.7)',
-  borderTopLeftRadius: 0,
-  borderBottomLeftRadius: 0,
+  marginBottom: large ? theme.spacing(1) : theme.spacing(0.3),
+  paddingTop: large ? theme.spacing(1) : theme.spacing(0.25),
+  paddingBottom: large ? theme.spacing(1) : theme.spacing(0.25),
+  paddingLeft: large ? theme.spacing(1.5) : theme.spacing(0.5),
+  paddingRight: large ? theme.spacing(1.5) : theme.spacing(0.5),
+  lineHeight: large ? 1.2 : 1,
+  fontSize: large ? '0.875rem' : '0.6rem',
+  borderLeft: large ? '4px solid rgba(59,175,214,0.7)' : '3px solid rgba(59, 175, 214, 0.7)',
+  borderTopLeftRadius: large ? theme.shape.borderRadius : 0,
+  borderBottomLeftRadius: large ? theme.shape.borderRadius : 0,
   backgroundColor: past ? 'rgba(228,227,227,0.9)' : 'rgba(173,216,230,0.5)',
   color: '#000',
   '&:hover': {
@@ -53,18 +55,16 @@ const TimeText = styled(Box)<BoxProps>(({ theme }) => ({
   fontSize: 9,
 }))
 
-const EventItem: React.FC<Props> = ({ title, start, onClick }) => {
+const EventItem: React.FC<Props> = ({ title, start, onClick, large = false }) => {
   const dateObj = new Date(start)
   const timeStr = format(dateObj, 'HH:mm')
   const past = dateObj < new Date()
 
   return (
-    <StyledButton fullWidth variant="contained" onClick={onClick} past={past}>
+    <StyledButton fullWidth variant="contained" onClick={onClick} past={past} large={large}>
       <Info component="div">
         <DateText component="span">{format(dateObj, 'dd.MM')}</DateText>
-        {timeStr !== '00:00' && (
-          <TimeText component="span">{timeStr}</TimeText>
-        )}
+        {timeStr !== '00:00' && <TimeText component="span">{timeStr}</TimeText>}
       </Info>
       <Box component="span">{title}</Box>
     </StyledButton>

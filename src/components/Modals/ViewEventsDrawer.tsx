@@ -1,13 +1,8 @@
 'use client'
 import React from 'react'
-import Drawer from '@mui/material/Drawer'
-import Stack from '@mui/material/Stack'
-import Button from '@mui/material/Button'
-import Typography from '@mui/material/Typography'
-import IconButton from '@mui/material/IconButton'
-import NoSsr from '@mui/material/NoSsr'
+import { Drawer, Stack, Button, Typography, IconButton } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
-import { styled } from '@mui/material/styles'
+import NoSsr from '@mui/material/NoSsr'
 import { useAppDispatch } from '@/store/hooks'
 import { openAddDrawer, openEditDrawer, closeViewDrawer } from '@/store/slices/modalSlice'
 import EventList, { EventType } from '../EventList'
@@ -18,41 +13,16 @@ type ViewEventsDrawerProps = {
   onClose: () => void
 }
 
-const Root = styled(Stack)(({ theme }) => ({
-  width: 320,
-  height: '100%',
-  padding: theme.spacing(3),
-  display: 'flex',
-  flexDirection: 'column',
-}))
-
-const Header = styled(Stack)(() => ({
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-}))
-
-const Content = styled(Stack)(() => ({
-  flexGrow: 1,
-}))
-
-const Footer = styled(Stack)(() => ({
-  flexDirection: 'row',
-}))
-
 const ViewEventsDrawer: React.FC<ViewEventsDrawerProps> = ({ open, date, onClose }) => {
   const dispatch = useAppDispatch()
-
   const handleClose = () => {
     dispatch(closeViewDrawer())
     onClose()
   }
-
   const handleAdd = (d?: Date) => {
     dispatch(openAddDrawer(d?.toISOString() ?? null))
     handleClose()
   }
-
   const handleEdit = (ev: EventType) => {
     dispatch(openEditDrawer(ev))
     handleClose()
@@ -61,19 +31,30 @@ const ViewEventsDrawer: React.FC<ViewEventsDrawerProps> = ({ open, date, onClose
   return (
     <NoSsr defer>
       <Drawer anchor="right" open={open} onClose={handleClose}>
-        <Root>
-          <Header>
-            <Typography variant="h6">List Events</Typography>
+        <Stack
+          sx={{
+            width: 320,
+            height: '100%',
+            p: 3,
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <Stack direction="row" justifyContent="space-between" alignItems="center">
+            <Typography variant="h6">
+              List Events
+            </Typography>
             <IconButton onClick={handleClose} size="small">
               <CloseIcon />
             </IconButton>
-          </Header>
+          </Stack>
 
-          <Content spacing={2}>
-            {date && <EventList date={date} onEdit={handleEdit} />}
-          </Content>
-
-          <Footer spacing={2}>
+          <Stack spacing={2} sx={{ flexGrow: 1 }}>
+            {date && (
+              <EventList date={date} onEdit={handleEdit} large />
+            )}
+          </Stack>
+          <Stack direction="row" spacing={2}>
             {date && (
               <Button fullWidth variant="contained" onClick={() => handleAdd(date)}>
                 Add
@@ -82,8 +63,8 @@ const ViewEventsDrawer: React.FC<ViewEventsDrawerProps> = ({ open, date, onClose
             <Button fullWidth variant="outlined" onClick={handleClose}>
               Cancel
             </Button>
-          </Footer>
-        </Root>
+          </Stack>
+        </Stack>
       </Drawer>
     </NoSsr>
   )

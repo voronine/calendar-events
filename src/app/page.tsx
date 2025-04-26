@@ -17,7 +17,7 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  marginBottom: theme.spacing(2),
+  padding: '8px'
 }))
 
 const CreateFab = styled(Fab)(({ theme }) => ({
