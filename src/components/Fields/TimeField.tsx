@@ -1,7 +1,14 @@
+'use client'
 import React from 'react'
-import { Box, TextFieldProps } from '@mui/material'
+import { styled, TextFieldProps } from '@mui/material'
 import { MobileTimePicker } from '@mui/x-date-pickers'
 import { SxProps } from '@mui/system'
+
+const StyledWrapper = styled('div')(({ theme }) => ({
+  flex: 1,
+  minWidth: 0,
+  minHeight: 95,
+}))
 
 type PickerPosition = { top: number; left: number }
 
@@ -43,9 +50,9 @@ export const TimePickerField: React.FC<TimePickerFieldProps> = ({
   inputRef,
   onOpen,
   position,
-  helperTextProps = {}
+  helperTextProps = {},
 }) => (
-  <Box sx={{ flex: 1, minWidth: 0, minHeight: 95 }}>
+  <StyledWrapper>
     <MobileTimePicker
       label={label}
       value={value}
@@ -64,10 +71,27 @@ export const TimePickerField: React.FC<TimePickerFieldProps> = ({
         dialog: {
           disablePortal: true,
           hideBackdrop: true,
-          PaperProps: { sx: { minWidth: 300 } },
-          sx: dialogSx(position.top, position.left),
+          PaperProps: {
+            sx: { minWidth: 300 },
+          },
+          sx: {
+            ...dialogSx(position.top, position.left),
+            '& .MuiClock-root': { m: 0 },
+            '& .MuiDialogActions-root': { p: 0 },
+            '& .MuiPickersToolbar-title': {
+              position: 'absolute',
+              top: 8,
+              right: 16,
+            },
+            '& .MuiPickersArrowSwitcher-root': {
+              position: 'absolute',
+              top: 0,
+              right: 5,
+              p: 0,
+            },
+          },
         },
       }}
     />
-  </Box>
+  </StyledWrapper>
 )
