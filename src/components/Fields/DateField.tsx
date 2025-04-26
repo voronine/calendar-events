@@ -2,6 +2,7 @@ import React from 'react'
 import { Box } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import { SxProps } from '@mui/system'
+import { TextFieldProps } from '@mui/material/TextField'
 
 type PickerPosition = { top: number; left: number }
 
@@ -31,7 +32,7 @@ type DatePickerFieldProps = {
   inputRef: React.Ref<HTMLInputElement | null>
   onOpen: () => void
   position: PickerPosition
-  helperTextProps?: Record<string, any>
+  helperTextProps?: Partial<TextFieldProps>
 }
 
 export const DatePickerField: React.FC<DatePickerFieldProps> = ({
@@ -58,7 +59,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
           error,
           helperText,
           ...helperTextProps
-        },
+        } as TextFieldProps,
         dialog: {
           disablePortal: true,
           hideBackdrop: true,

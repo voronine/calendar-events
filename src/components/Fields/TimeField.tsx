@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box } from '@mui/material'
+import { Box, TextFieldProps } from '@mui/material'
 import { MobileTimePicker } from '@mui/x-date-pickers'
 import { SxProps } from '@mui/system'
 
@@ -31,7 +31,7 @@ type TimePickerFieldProps = {
   inputRef: React.Ref<HTMLInputElement | null>
   onOpen: () => void
   position: PickerPosition
-  helperTextProps?: Record<string, any>
+  helperTextProps?: Partial<TextFieldProps>
 }
 
 export const TimePickerField: React.FC<TimePickerFieldProps> = ({
@@ -59,14 +59,14 @@ export const TimePickerField: React.FC<TimePickerFieldProps> = ({
           fullWidth: true,
           error,
           helperText,
-          ...helperTextProps
-        },
+          ...helperTextProps,
+        } as TextFieldProps,
         dialog: {
           disablePortal: true,
           hideBackdrop: true,
           PaperProps: { sx: { minWidth: 300 } },
-          sx: dialogSx(position.top, position.left)
-        }
+          sx: dialogSx(position.top, position.left),
+        },
       }}
     />
   </Box>

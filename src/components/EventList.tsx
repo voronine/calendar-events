@@ -20,7 +20,7 @@ interface EventListProps {
   large?: boolean
 }
 
-const EventList: React.FC<EventListProps> = React.memo(({ date, onEdit, large = false }) => {
+const EventListBase: React.FC<EventListProps> = ({ date, onEdit, large = false }) => {
   const items = useAppSelector(s => s.events.items)
 
   const events = useMemo(() => {
@@ -43,6 +43,9 @@ const EventList: React.FC<EventListProps> = React.memo(({ date, onEdit, large = 
       ))}
     </div>
   )
-})
+}
+
+const EventList = React.memo(EventListBase)
+EventList.displayName = 'EventList'
 
 export default EventList

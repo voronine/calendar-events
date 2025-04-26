@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextField } from '@mui/material'
+import { TextField, TextFieldProps } from '@mui/material'
 
 type InputFieldProps = {
   name: string
@@ -8,7 +8,7 @@ type InputFieldProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   error?: boolean
   helperText?: string
-  helperTextProps?: Record<string, any>
+  helperTextProps?: Partial<TextFieldProps>
 }
 
 export const InputField: React.FC<InputFieldProps> = ({

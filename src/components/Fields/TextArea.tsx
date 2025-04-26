@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextField } from '@mui/material'
+import { TextField, TextFieldProps } from '@mui/material'
 
 type TextAreaFieldProps = {
   name: string
@@ -9,7 +9,7 @@ type TextAreaFieldProps = {
   error?: boolean
   helperText?: string
   rows?: number
-  helperTextProps?: Record<string, any>
+  helperTextProps?: Partial<TextFieldProps>
 }
 
 export const TextAreaField: React.FC<TextAreaFieldProps> = ({

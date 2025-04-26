@@ -13,7 +13,7 @@ import { openAddDrawer, closeAddDrawer, closeViewDrawer } from '@/store/slices/m
 import ViewEventsDrawer from '@/components/Modals/ViewEventsDrawer'
 import { EventDrawer } from '@/components/Modals/EventDrawer'
 
-const HeaderContainer = styled(Box)(({ theme }) => ({
+const HeaderContainer = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',

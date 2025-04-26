@@ -51,4 +51,6 @@ const DayCell: React.FC<DayCellProps> = React.memo(({ date, onAdd }) => {
   )
 })
 
+DayCell.displayName = 'DayCell'
+
 export default DayCell
