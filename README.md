@@ -1,5 +1,7 @@
 # Calendar App — Technical Documentation
 
+DEMO https://calendar-events-57u4.vercel.app/
+
 ## Overview  
 This is a client-side month-planner built with React and Next.js. Users can view a calendar grid, open a detailed list of events for any day, and add or edit events via slide-in drawers. All data is persisted locally, so the planner keeps its state between page reloads.
 
