@@ -6,6 +6,9 @@ export const eventSchema = yup.object({
     .min(3, 'Title must be at least 3 characters')
     .max(100, 'Title must be at most 100 characters')
     .required('Title is required'),
+  description: yup
+    .string()
+    .max(300, 'Description must be at most 300 characters'),
   start: yup
     .date()
     .min(new Date(), 'Cannot set an event in the past')

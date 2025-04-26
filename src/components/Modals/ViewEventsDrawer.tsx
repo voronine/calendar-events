@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
-import { Drawer, Stack, Button, Typography } from '@mui/material'
+import { Drawer, Stack, Button, Typography, IconButton } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
 import NoSsr from '@mui/material/NoSsr'
 import { useAppDispatch } from '@/store/hooks'
 import { openAddDrawer, openEditDrawer, closeViewDrawer } from '@/store/slices/modalSlice'
@@ -39,9 +40,14 @@ const ViewEventsDrawer: React.FC<ViewEventsDrawerProps> = ({ open, date, onClose
             flexDirection: 'column',
           }}
         >
-          <Typography variant="h6">
+          <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ marginBottom: "12px"}}>
+            <Typography variant="h6">
               List Events
-        </Typography>
+            </Typography>
+            <IconButton onClick={handleClose} size="small">
+              <CloseIcon />
+            </IconButton>
+          </Stack>
 
           <Stack spacing={2} sx={{ flexGrow: 1 }}>
             {date && <EventList date={date} onEdit={handleEdit} />}
