@@ -1,6 +1,5 @@
-// components/DayCell.tsx
 'use client'
-import React from 'react'
+import React, { MouseEvent } from 'react'
 import { useAppDispatch } from '@/store/hooks'
 import {
   openViewDrawer,
@@ -15,26 +14,25 @@ interface DayCellProps {
   onAdd?: (date: Date) => void
 }
 
-export default function DayCell({ date, onAdd }: DayCellProps) {
+const DayCell: React.FC<DayCellProps> = React.memo(({ date, onAdd }) => {
   const dispatch = useAppDispatch()
+  const isoDate = date.toISOString()
   const isFirstDay = date.getDate() === 1
   const isToday = date.toDateString() === new Date().toDateString()
-  const cellClass = [
-    styles.cell,
-    isFirstDay && styles.firstDay,
-  ].filter(Boolean).join(' ')
-  const dateClass = [
-    styles.date,
-    isToday && styles.today,
-  ].filter(Boolean).join(' ')
+  const cellClass = [styles.cell, isFirstDay && styles.firstDay]
+    .filter(Boolean)
+    .join(' ')
+  const dateClass = [styles.date, isToday && styles.today]
+    .filter(Boolean)
+    .join(' ')
 
   const handleClick = () => {
-    dispatch(openViewDrawer(date.toISOString()))
+    dispatch(openViewDrawer(isoDate))
   }
 
-  const handleContext = (e: React.MouseEvent) => {
+  const handleContext = (e: MouseEvent) => {
     e.preventDefault()
-    dispatch(openAddDrawer(date.toISOString()))
+    dispatch(openAddDrawer(isoDate))
     onAdd?.(date)
   }
 
@@ -52,4 +50,6 @@ export default function DayCell({ date, onAdd }: DayCellProps) {
       <EventList date={date} onEdit={handleEdit} />
     </div>
   )
-}
+})
+
+export default DayCell

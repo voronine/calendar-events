@@ -14,12 +14,12 @@ export type EventType = {
   endTime?: string
 }
 
-type EventListProps = {
+interface EventListProps {
   date: Date
   onEdit: (event: EventType) => void
 }
 
-export default function EventList({ date, onEdit }: EventListProps) {
+const EventList: React.FC<EventListProps> = React.memo(({ date, onEdit }) => {
   const items = useAppSelector(s => s.events.items)
   const events = useMemo(
     () => items.filter(e => iso(new Date(e.start)) === iso(date)),
@@ -39,4 +39,6 @@ export default function EventList({ date, onEdit }: EventListProps) {
       ))}
     </div>
   )
-}
+})
+
+export default EventList

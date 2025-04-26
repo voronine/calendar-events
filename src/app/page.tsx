@@ -9,11 +9,7 @@ import CalendarGrid from '@/components/CalendarGrid'
 import YearSelector from '@/components/Naviganion/YearSelector'
 import MonthNavigator from '@/components/Naviganion/MonthNavigator'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import {
-  openAddDrawer,
-  closeAddDrawer,
-  closeViewDrawer,
-} from '@/store/slices/modalSlice'
+import { openAddDrawer, closeAddDrawer, closeViewDrawer } from '@/store/slices/modalSlice'
 import ViewEventsDrawer from '@/components/Modals/ViewEventsDrawer'
 import { EventDrawer } from '@/components/Modals/EventDrawer'
 
@@ -30,7 +26,7 @@ const CreateFab = styled(Fab)(({ theme }) => ({
   right: theme.spacing(4),
 }))
 
-export default function Home() {
+const Home: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date())
   const dispatch = useAppDispatch()
   const { addOpen, addEvent, viewOpen, viewDate } = useAppSelector(s => s.modal)
@@ -66,3 +62,5 @@ export default function Home() {
     </NoSsr>
   )
 }
+
+export default Home

@@ -7,7 +7,7 @@ type YearSelectorProps = {
   onChange: (date: Date) => void
 }
 
-export default function YearSelector({ currentDate, onChange }: YearSelectorProps) {
+const YearSelector: React.FC<YearSelectorProps> = ({ currentDate, onChange }) => {
   const yearOptions = useMemo(() => {
     const year = currentDate.getFullYear()
     return Array.from({ length: 5 }, (_, i) => year - 2 + i)
@@ -34,3 +34,5 @@ export default function YearSelector({ currentDate, onChange }: YearSelectorProp
     </Select>
   )
 }
+
+export default YearSelector

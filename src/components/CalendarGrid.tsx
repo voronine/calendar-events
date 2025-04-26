@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { daysInMonth } from '@/lib/date'
 import DayCell from './DayCell'
 import styles from './CalendarGrid.module.css'
@@ -10,7 +10,7 @@ type Props = {
 }
 
 const CalendarGrid: React.FC<Props> = ({ current, onAdd }) => {
-  const days = daysInMonth(current)
+  const days = useMemo(() => daysInMonth(current), [current]);
 
   return (
     <div className={styles.grid}>

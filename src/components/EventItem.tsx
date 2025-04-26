@@ -12,7 +12,7 @@ export type Props = {
 }
 
 const StyledButton = styled(Button, {
-  shouldForwardProp: (prop) => prop !== 'past',
+  shouldForwardProp: prop => prop !== 'past',
 })<ButtonProps & { past: boolean }>(({ theme, past }) => ({
   justifyContent: 'flex-start',
   flexDirection: 'column',
@@ -44,7 +44,7 @@ const Info = styled(Box)<BoxProps>(({ theme }) => ({
   opacity: 0.75,
 }))
 
-const DateText = styled(Box)<BoxProps>(({ theme }) => ({
+const DateText = styled(Box)<BoxProps>(() => ({
   fontSize: 9,
 }))
 
@@ -53,7 +53,7 @@ const TimeText = styled(Box)<BoxProps>(({ theme }) => ({
   fontSize: 9,
 }))
 
-export default function EventItem({ title, start, onClick }: Props) {
+const EventItem: React.FC<Props> = ({ title, start, onClick }) => {
   const dateObj = new Date(start)
   const timeStr = format(dateObj, 'HH:mm')
   const past = dateObj < new Date()
@@ -70,3 +70,5 @@ export default function EventItem({ title, start, onClick }: Props) {
     </StyledButton>
   )
 }
+
+export default EventItem
