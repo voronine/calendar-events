@@ -21,19 +21,10 @@ type EventListProps = {
 
 export default function EventList({ date, onEdit }: EventListProps) {
   const items = useAppSelector(s => s.events.items)
-  const events = useMemo(() => {
-    return items
-      .filter(e => iso(new Date(e.start)) === iso(date))
-      .sort((a, b) => {
-        const tA = a.startTime
-          ? new Date(a.startTime).getTime()
-          : new Date(a.start).getTime()
-        const tB = b.startTime
-          ? new Date(b.startTime).getTime()
-          : new Date(b.start).getTime()
-        return tA - tB
-      })
-  }, [items, date])
+  const events = useMemo(
+    () => items.filter(e => iso(new Date(e.start)) === iso(date)),
+    [items, date]
+  )
 
   return (
     <div className={styles.events}>

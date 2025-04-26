@@ -3,9 +3,8 @@ import React, { useState } from 'react'
 import NoSsr from '@mui/material/NoSsr'
 import { Box, Fab } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-import MonthNavigator from '@/components/MonthNavigator'
 import CalendarGrid from '@/components/CalendarGrid'
-import YearSelector from '@/components/YearSelector'
+import YearSelector from '@/components/Naviganion/YearSelector'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import {
   openAddDrawer,
@@ -14,6 +13,7 @@ import {
 } from '@/store/slices/modalSlice'
 import ViewEventsDrawer from '@/components/Modals/ViewEventsDrawer'
 import { EventDrawer } from '@/components/Modals/EventDrawer'
+import MonthNavigator from '@/components/Naviganion/MonthNavigator'
 
 export default function Home() {
   const [current, setCurrent] = useState(new Date())

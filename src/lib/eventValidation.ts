@@ -1,23 +1,33 @@
 import * as yup from 'yup'
 
+const todayStart = new Date()
+todayStart.setHours(0, 0, 0, 0)
+
 export const eventSchema = yup.object({
   title: yup
     .string()
     .min(3, 'Title must be at least 3 characters')
     .max(100, 'Title must be at most 100 characters')
     .required('Title is required'),
+  
   description: yup
     .string()
     .max(300, 'Description must be at most 300 characters'),
+  
   start: yup
     .date()
-    .min(new Date(), 'Cannot set an event in the past')
+    .min(todayStart, 'Cannot set an event before today')
     .required('Start date is required'),
+  
   end: yup
     .date()
     .min(yup.ref('start'), 'End date cannot be before start date')
     .required('End date is required'),
-  startTime: yup.date().nullable(),
+  
+  startTime: yup
+    .date()
+    .nullable(),
+  
   endTime: yup
     .date()
     .nullable()
