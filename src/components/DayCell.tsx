@@ -1,4 +1,3 @@
-'use client'
 import React, { MouseEvent } from 'react'
 import { useAppDispatch } from '@/store/hooks'
 import {

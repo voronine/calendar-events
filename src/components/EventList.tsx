@@ -2,7 +2,7 @@
 import React, { useMemo } from 'react'
 import { useAppSelector } from '@/store/hooks'
 import { iso } from '@/lib/date'
-import EventItem, { Props as EventItemProps } from './EventItem'
+import EventItem from './EventItem'
 import styles from './CalendarGrid.module.css'
 
 export type EventType = {
@@ -22,10 +22,12 @@ interface EventListProps {
 
 const EventList: React.FC<EventListProps> = React.memo(({ date, onEdit, large = false }) => {
   const items = useAppSelector(s => s.events.items)
-  const events = useMemo(
-    () => items.filter(e => iso(new Date(e.start)) === iso(date)),
-    [items, date]
-  )
+
+  const events = useMemo(() => {
+    return items
+      .filter(e => iso(new Date(e.start)) === iso(date))
+      .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
+  }, [items, date])
 
   return (
     <div className={styles.events}>
@@ -35,7 +37,7 @@ const EventList: React.FC<EventListProps> = React.memo(({ date, onEdit, large = 
             title={ev.title}
             start={ev.start}
             onClick={() => onEdit(ev)}
-            large={large}    
+            large={large}
           />
         </div>
       ))}
