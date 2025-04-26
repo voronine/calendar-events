@@ -1,4 +1,3 @@
-// DatePickerField.tsx
 import React from 'react'
 import { Box } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
@@ -6,7 +5,6 @@ import { SxProps } from '@mui/system'
 
 type PickerPosition = { top: number; left: number }
 
-// internal dialog styling
 const dialogSx = (top: number, left: number): SxProps => ({
   '& .MuiDialog-container': { position: 'relative' },
   '& .MuiPaper-root': {

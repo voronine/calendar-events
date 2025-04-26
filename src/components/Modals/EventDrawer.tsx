@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import NoSsr from '@mui/material/NoSsr'
 import CloseIcon from '@mui/icons-material/Close'
+import { styled } from '@mui/material/styles'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { Formik } from 'formik'
@@ -27,6 +28,28 @@ type Props = {
   onClose: () => void
   initialEvent: EventItem | null
 }
+
+const Root = styled(Stack)(({ theme }) => ({
+  width: 320,
+  height: '100%',
+  padding: theme.spacing(3),
+  flexDirection: 'column',
+}))
+
+const Header = styled(Stack)(({ theme }) => ({
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: theme.spacing(1.5),
+}))
+
+const Content = styled(Stack)(() => ({
+  flexGrow: 1,
+}))
+
+const TitleWrapper = styled(Box)(() => ({
+  minHeight: 75,
+}))
 
 export const EventDrawer: React.FC<Props> = ({ open, onClose, initialEvent }) => {
   const dispatch = useAppDispatch()
@@ -79,16 +102,19 @@ export const EventDrawer: React.FC<Props> = ({ open, onClose, initialEvent }) =>
             }}
           >
             {({ values, errors, touched, handleChange, setFieldValue, handleSubmit }) => (
-              <Stack sx={{ width: 320, height: '100%', p: 3, flexDirection: 'column' }}>
-                <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.5 }}>
-                  <Typography variant="h6">{isEdit ? 'Edit event' : 'Add event'}</Typography>
+              <Root>
+                <Header>
+                  <Typography variant="h6">
+                    {isEdit ? 'Edit event' : 'Add event'}
+                  </Typography>
+                  
                   <IconButton onClick={handleClose} size="small">
                     <CloseIcon />
                   </IconButton>
-                </Stack>
+                </Header>
 
-                <Stack spacing={2} sx={{ flexGrow: 1 }}>
-                  <Box sx={{ minHeight: 75 }}>
+                <Content spacing={2}>
+                  <TitleWrapper>
                     <InputField
                       name="title"
                       label="Title"
@@ -98,7 +124,7 @@ export const EventDrawer: React.FC<Props> = ({ open, onClose, initialEvent }) =>
                       helperText={touched.title ? errors.title : ''}
                       helperTextProps={helperTextProps}
                     />
-                  </Box>
+                  </TitleWrapper>
 
                   <Stack direction="row" spacing={2}>
                     <DatePickerField
@@ -112,6 +138,7 @@ export const EventDrawer: React.FC<Props> = ({ open, onClose, initialEvent }) =>
                       position={startPos}
                       helperTextProps={helperTextProps}
                     />
+
                     <DatePickerField
                       label="End date"
                       value={new Date(values.end)}
@@ -161,7 +188,7 @@ export const EventDrawer: React.FC<Props> = ({ open, onClose, initialEvent }) =>
                     rows={4}
                     helperTextProps={helperTextProps}
                   />
-                </Stack>
+                </Content>
 
                 <Stack direction="row" spacing={2}>
                   <Button fullWidth variant="contained" onClick={() => handleSubmit()}>
@@ -171,7 +198,7 @@ export const EventDrawer: React.FC<Props> = ({ open, onClose, initialEvent }) =>
                     Cancel
                   </Button>
                 </Stack>
-              </Stack>
+              </Root>
             )}
           </Formik>
         </LocalizationProvider>

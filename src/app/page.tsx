@@ -1,10 +1,13 @@
 'use client'
 import React, { useState } from 'react'
 import NoSsr from '@mui/material/NoSsr'
-import { Box, Fab } from '@mui/material'
+import Box from '@mui/material/Box'
+import Fab from '@mui/material/Fab'
 import AddIcon from '@mui/icons-material/Add'
+import { styled } from '@mui/material/styles'
 import CalendarGrid from '@/components/CalendarGrid'
 import YearSelector from '@/components/Naviganion/YearSelector'
+import MonthNavigator from '@/components/Naviganion/MonthNavigator'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import {
   openAddDrawer,
@@ -13,10 +16,22 @@ import {
 } from '@/store/slices/modalSlice'
 import ViewEventsDrawer from '@/components/Modals/ViewEventsDrawer'
 import { EventDrawer } from '@/components/Modals/EventDrawer'
-import MonthNavigator from '@/components/Naviganion/MonthNavigator'
+
+const HeaderContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  marginBottom: theme.spacing(2),
+}))
+
+const CreateFab = styled(Fab)(({ theme }) => ({
+  position: 'fixed',
+  bottom: theme.spacing(4),
+  right: theme.spacing(4),
+}))
 
 export default function Home() {
-  const [current, setCurrent] = useState(new Date())
+  const [currentDate, setCurrentDate] = useState(new Date())
   const dispatch = useAppDispatch()
   const { addOpen, addEvent, viewOpen, viewDate } = useAppSelector(s => s.modal)
 
@@ -26,33 +41,23 @@ export default function Home() {
 
   return (
     <NoSsr>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          mb: 2,
-        }}
-      >
-        <MonthNavigator date={current} onChange={setCurrent} />
-        <YearSelector currentDate={current} onChange={setCurrent} />
-      </Box>
+      <HeaderContainer>
+        <MonthNavigator date={currentDate} onChange={setCurrentDate} />
+        <YearSelector currentDate={currentDate} onChange={setCurrentDate} />
+      </HeaderContainer>
 
-      <CalendarGrid current={current} onAdd={handleAdd} />
+      <CalendarGrid current={currentDate} onAdd={handleAdd} />
 
-      <Fab
-        color="primary"
-        sx={{ position: 'fixed', bottom: 32, right: 32 }}
-        onClick={() => handleAdd()}
-      >
+      <CreateFab color="primary" onClick={() => handleAdd()}>
         <AddIcon />
-      </Fab>
+      </CreateFab>
 
       <EventDrawer
         open={addOpen}
         onClose={() => dispatch(closeAddDrawer())}
         initialEvent={addEvent}
       />
+
       <ViewEventsDrawer
         open={viewOpen}
         date={viewDate ? new Date(viewDate) : undefined}
