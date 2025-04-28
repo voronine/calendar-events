@@ -8,6 +8,7 @@
     padding: 15px;
     height: calc(100vh - 100px);
     box-sizing: border-box;
+    padding-inline: 70px;
   }
   
   .cell {
@@ -20,6 +21,7 @@
     border-radius: 4px;
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
     min-height: 0;
+    padding-inline: 2px;
   }
   
   .cell:hover {
@@ -59,6 +61,7 @@
     overflow-x: hidden;
     margin-top: 32px;
     position: relative;
+    padding-inline: 4px;
   }
   
   .events::-webkit-scrollbar {
