@@ -1,10 +1,10 @@
 'use client'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { styled, TextFieldProps } from '@mui/material'
 import { MobileTimePicker } from '@mui/x-date-pickers'
 import { SxProps } from '@mui/system'
 
-const StyledWrapper = styled('div')(({ theme }) => ({
+const StyledWrapper = styled('div')(() => ({
   flex: 1,
   minWidth: 0,
   minHeight: 95,
@@ -12,7 +12,7 @@ const StyledWrapper = styled('div')(({ theme }) => ({
 
 type PickerPosition = { top: number; left: number }
 
-const dialogSx = (top: number, left: number): SxProps => ({
+const useDialogSx = (top: number, left: number): SxProps => useMemo(() => ({
   '& .MuiDialog-container': { position: 'relative' },
   '& .MuiPaper-root': {
     position: 'fixed',
@@ -20,6 +20,7 @@ const dialogSx = (top: number, left: number): SxProps => ({
     left,
     margin: '-13px',
     padding: 1,
+    minWidth: 300,
   },
   '& .MuiPickersToolbar-root': { padding: 0 },
   '& .MuiPickersToolbar-title, & .MuiTypography-overline': {
@@ -27,7 +28,20 @@ const dialogSx = (top: number, left: number): SxProps => ({
     padding: 0,
   },
   '& .MuiPickersToolbarText-root': { fontSize: 20 },
-})
+  '& .MuiClock-root': { margin: 0 },
+  '& .MuiDialogActions-root': { padding: 0 },
+  '& .MuiPickersToolbar-title': {
+    position: 'absolute',
+    top: 8,
+    right: 16,
+  },
+  '& .MuiPickersArrowSwitcher-root': {
+    position: 'absolute',
+    top: 0,
+    right: 5,
+    padding: 0,
+  },
+}), [top, left])
 
 type TimePickerFieldProps = {
   label: string
@@ -51,47 +65,33 @@ export const TimePickerField: React.FC<TimePickerFieldProps> = ({
   onOpen,
   position,
   helperTextProps = {},
-}) => (
-  <StyledWrapper>
-    <MobileTimePicker
-      label={label}
-      value={value}
-      onChange={onChange}
-      ampm={false}
-      format="HH:mm"
-      inputRef={inputRef}
-      onOpen={onOpen}
-      slotProps={{
-        textField: {
-          fullWidth: true,
-          error,
-          helperText,
-          ...helperTextProps,
-        } as TextFieldProps,
-        dialog: {
-          disablePortal: true,
-          hideBackdrop: true,
-          PaperProps: {
-            sx: { minWidth: 300 },
+}) => {
+  const dialogStyles = useDialogSx(position.top, position.left)
+
+  return (
+    <StyledWrapper>
+      <MobileTimePicker
+        label={label}
+        value={value}
+        onChange={onChange}
+        ampm={false}
+        format="HH:mm"
+        inputRef={inputRef}
+        onOpen={onOpen}
+        slotProps={{
+          textField: {
+            fullWidth: true,
+            error,
+            helperText,
+            ...helperTextProps,
+          } as TextFieldProps,
+          dialog: {
+            disablePortal: true,
+            hideBackdrop: true,
+            sx: dialogStyles,
           },
-          sx: {
-            ...dialogSx(position.top, position.left),
-            '& .MuiClock-root': { m: 0 },
-            '& .MuiDialogActions-root': { p: 0 },
-            '& .MuiPickersToolbar-title': {
-              position: 'absolute',
-              top: 8,
-              right: 16,
-            },
-            '& .MuiPickersArrowSwitcher-root': {
-              position: 'absolute',
-              top: 0,
-              right: 5,
-              p: 0,
-            },
-          },
-        },
-      }}
-    />
-  </StyledWrapper>
-)
+        }}
+      />
+    </StyledWrapper>
+  )
+}
