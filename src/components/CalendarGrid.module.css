@@ -72,3 +72,9 @@
     background: rgba(25, 118, 210, 0.3);
     border-radius: 4px;
   }
+
+  @media screen and (max-width: 780px) {
+    .grid {
+      padding-inline: 10px;
+    }
+  }
